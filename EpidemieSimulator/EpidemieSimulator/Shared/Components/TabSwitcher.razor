@@ -1,0 +1,14 @@
+﻿@namespace EpidemieSimulator.Components
+
+<div class="@CSS flex justify-around w-full rounded-md shadow-dark bg-gray-700">
+    @for (int i = 0; i < TabNames.Length; i++)
+    {
+        var index = i;
+        <button @onclick="_=> { SelectedIndex = index; OnTabChanged.InvokeAsync(index); }"
+                class="flex-1 focus:outline-none cursor-pointer border-b-@HighlightThickness @TabHeaderCSS @(SelectedIndex == index ? TabHeaderActiveCSS: TabHeaderInactiveCSS)">
+            <div class="justify-center flex items-center h-full w-full">
+                @TabNames[index]
+            </div>
+        </button>
+    }
+</div>

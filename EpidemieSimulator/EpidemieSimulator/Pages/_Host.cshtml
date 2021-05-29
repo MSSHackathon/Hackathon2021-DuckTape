@@ -1,0 +1,83 @@
+﻿@page "/"
+@namespace EpidemieSimulator.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{ Layout = null; }
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Duckademic</title>
+    <base href="~/" />
+    <link href="css/tailwind.min.css" rel="stylesheet" />
+    <link href="EpidemieSimulator.styles.css" rel="stylesheet" />
+</head>
+<body>
+    <script>
+const { width } = require("tailwindcss/defaultTheme");
+
+        var selectedEntry = null;
+        var MapResizer;
+        function getElementID(obj, modus) {
+            if (selectedEntry === obj) {
+                selectedEntry?.classList.add("fill-gray-400");
+                selectedEntry?.classList.remove("fill-gray-600");
+                selectedEntry = null;
+                return;
+            }
+
+            //if (modus === 0) {
+            //    DotNet.invokeMethodAsync('EpidemieSimulator', 'InfectorGermany', obj.id.toString());
+            //}
+            //if (modus === 1) {
+            //    DotNet.invokeMethodAsync('EpidemieSimulator', 'InfectorEuropa', obj.id.toString());
+            //}
+
+            selectedEntry?.classList.add("fill-gray-400");
+            selectedEntry?.classList.remove("fill-gray-600");
+
+            obj.classList.add("fill-gray-600");
+            obj.classList.remove("fill-gray-400");
+            selectedEntry = obj;
+        }
+        function getSelectedEntry() {
+            return selectedEntry?.id.toString();
+        }
+        function clearSelectedEntry() {
+            selectedEntry = null;
+        }
+        function fillParent(element) {
+            let parent = element.parentElement;
+            let viewBox = element.viewBox.baseVal;
+            let aspectRatio = viewBox.height / viewBox.width;
+            MapResizer = new ResizeObserver(entries => {
+                let maxWidth = parent.offsetWidth;
+                let maxHeight = parent.offsetHeight;
+                let widthRatio = maxWidth / viewBox.width;
+                let heightRatio = maxHeight / viewBox.height;
+                let selectedRatio = widthRatio < heightRatio ? widthRatio: heightRatio;
+                element.style.width = selectedRatio * viewBox.width + "px";
+                element.style.height = selectedRatio * viewBox.height + "px";
+            })
+            MapResizer.observe(parent);
+        }
+    </script>
+
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="~/JS/Charts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>

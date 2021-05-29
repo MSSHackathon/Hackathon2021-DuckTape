@@ -1,0 +1,31 @@
+@namespace EpidemieSimulator.Components
+
+<div class="relative w-full">
+    <input @oninput="OnValueChanged"
+           value="@_value"
+           class="w-full py-2 px-4 relative bg-white rounded-md bg-gray-700 hover:bg-gray-500
+                  focus:outline-none focus:ring-1 focus:ring-gray-500
+                  shadow-light dark:shadow-dark transition duration-250 ease-in-out
+                  @CSS"
+           placeholder="@Placeholder"
+           autocomplete="off" />
+    @if (Type == InputType.LiveSearch)
+    {
+        <svg class="w-9 h-9 absolute inset-y-0 right-0 flex items-center pr-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewBox="0 0 24 24">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+    }
+    @if (Type == InputType.ConfirmationSearch)
+    {
+        <CustomButton Type="@ButtonType" OnClick="OnClick">
+            <Content>
+                <div class="w-full flex justify-between items-center">
+                    <p>@ButtonCaption</p>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewBox="0 0 24 24">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </Content>
+        </CustomButton>
+    }
+</div>

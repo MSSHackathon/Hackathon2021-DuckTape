@@ -1,0 +1,30 @@
+﻿@namespace EpidemieSimulator.Components
+
+@inject SidebarState SidebarState
+
+<div class="@(_contentHidden ? "" : "overflow-hidden") relative">
+    @if (!SidebarState.Opened)
+    {
+        <div class="absolute right-0 shadow-dark mt-4 p-2 bg-gray-500 rounded-l-full" @onclick="ToggleSidebar">
+            <svg class="w-6 h-6 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 10 17" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.05264 1.47529L1.02808 8.49985L8.05264 15.5244"></path>
+            </svg>
+        </div>
+    }
+    <div class="bg-gray-600 flex flex-col items-center shadow-side-dark transform transition-transform duration-700 ease-out float-right pt-5
+                @(!SidebarState.Opened ? "max-w-0 pl-0 pb-0 pr-0 delay-300" : "max-w-screen-sm pl-5 pb-5 pr-5") @(_contentHidden ? "h-0" : "h-full")"
+         style="transition-property: max-width, padding;">
+        @if (!_contentHidden)
+        {
+            <div class="p-1 self-start mb-2 rounded-full bg-gray-500 shadow-dark">
+                <svg class="w-6 h-6 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 10 17"
+                     xmlns="http://www.w3.org/2000/svg" @onclick="ToggleSidebar">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1.94727 15.5244L8.97183 8.49985L1.94727 1.47529"></path>
+                </svg>
+            </div>
+            <div class="@(!SidebarState.Opened ? "fade-out" : "fade-in")">
+                @Content
+            </div>
+        }
+    </div>
+</div>

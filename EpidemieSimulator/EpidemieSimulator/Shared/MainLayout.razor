@@ -1,0 +1,16 @@
+﻿@inherits LayoutComponentBase
+
+@using EpidemieSimulator.Components
+
+<div class="h-screen w-screen text-gray-700 dark:text-gray-200 grid"
+     style="grid-template-columns: auto min-content;
+            grid-template-rows:min-content auto;">
+    <NavMenu />
+    <div class="bg-gray-700 overflow-hidden">
+        @Body
+    </div>
+    <Sidebar>
+        <Content>
+        </Content>
+    </Sidebar>
+</div>

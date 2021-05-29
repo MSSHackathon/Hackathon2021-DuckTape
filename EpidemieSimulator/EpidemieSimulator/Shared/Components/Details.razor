@@ -1,0 +1,38 @@
+﻿@namespace EpidemieSimulator.Components
+@using System.Globalization
+<div class="bg-black text-white opacity-60 rounded-md p-4 whitespace-nowrap select-none grid grid-cols-2 text-xl justify-items-center items-center">
+    <p>Name:</p>
+    <p>@Name</p>
+    <p>Einwohner:</p>
+    <p>@Population.ToString(NumberFormat, CultureInfo.CurrentCulture)</p>
+    <p>Empfänglich:</p>
+    <p>@Susceptible.ToString(NumberFormat, CultureInfo.CurrentCulture)</p>
+    <p>Infiziert:</p>
+    <p>@Infected.ToString(NumberFormat, CultureInfo.CurrentCulture)</p>
+    <p>Genesen:</p>
+    <p>@Recovered.ToString(NumberFormat, CultureInfo.CurrentCulture)</p>
+    <p>Verstorben:</p>
+    <p>@Dead.ToString(NumberFormat, CultureInfo.CurrentCulture)</p>
+</div>
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public long Population { get; set; }
+
+    [Parameter]
+    public long Recovered { get; set; }
+
+    [Parameter]
+    public long Dead { get; set; }
+
+    [Parameter]
+    public long Infected { get; set; }
+
+    [Parameter]
+    public long Susceptible { get; set; }
+
+    private const string NumberFormat = "###,###,##0";
+}

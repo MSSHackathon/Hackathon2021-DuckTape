@@ -1,0 +1,18 @@
+﻿@namespace EpidemieSimulator.Components
+
+<div class="flex justify-between w-full shadow-dark rounded-md p-2 bg-gray-700 text-gray-200">
+    <div class="select-none flex-row">
+        <p>@Caption</p>
+    </div>
+    <div @onclick="_=> ToggleCheckBoxState()" class="flex-inline object-contain w-6 h-6 border-2 box-border rounded-md border-gray-200">
+        <svg class="w-7 h-5 @(CheckBoxState ? "" : "hidden")" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+            <path style=" stroke-dasharray: 31px;
+                    stroke-dashoffset: 31px;
+                    animation: sign 400ms ease-in;
+                    animation-fill-mode: forwards;"
+                  class="stroke-yellow-500"
+                  d="M2 13.1088C3.40392 14.8223 4.6618 16.682 5.92383 18.6331C6.20859 19.0733 6.66725 20.3419 7.063 19.9126C7.93966 18.9615 8.68609 17.6756 9.47766 16.5709C11.114 14.2873 12.8012 12.0928 14.4044 9.75208C16.0273 7.38238 17.7649 4.8641 19 2" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </div>
+</div>

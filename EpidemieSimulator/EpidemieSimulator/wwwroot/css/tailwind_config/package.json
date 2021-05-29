@@ -1,0 +1,23 @@
+{
+  "name": "tailwind_config",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "buildtailwind": "npx tailwindcss-cli@latest build tailwind.css -o ../tailwind.min.css",
+    "prodtailwind": "npx tailwindcss-cli@latest build tailwind.css -o output.css && postcss output.css -o ../tailwind.min.css && del /f output.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fullhuman/postcss-purgecss": "^4.0.2",
+    "autoprefixer": "^10.2.5",
+    "cssnano": "^4.1.10",
+    "postcss": "^8.2.9",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.0.4",
+    "tailwindcss-cli": "^0.1.2"
+  },
+  "devDependencies": {},
+  "description": ""
+}

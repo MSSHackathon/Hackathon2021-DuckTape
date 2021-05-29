@@ -1,0 +1,135 @@
+﻿@page "/"
+
+@using EpidemieSimulator.Components
+@using EpidemieSimulator.Services
+@using EpidemieSimulator.Data
+
+@inject MapService MapService
+@inject IJSRuntime JS
+
+<div class="h-full">
+    <TabSwitcher TabNames="_regions" HighlightThickness="4" OnTabChanged="(tabIndex) => TabChanged(tabIndex)" TabHeaderCSS="text-gray-200 text-2xl p-3" />
+    <div class="grid grid-cols-5 gap-4 p-4" style="height: calc(100% - 60px);">
+        <div class="justify-self-center self-center w-full h-full col-span-2">
+            @if (_tabIndex == 0)
+            {
+                <GermanyMap />
+            }
+            else
+            {
+                <EuropeMap />
+            }
+        </div>
+        @if (firstEventTriggerd)
+        {
+            @if (_provinceSelected)
+            {
+                <Details Name="@selectedProvince.Name" Population="selectedProvince.Population"
+                         Recovered="selectedProvince.CuredPopulation" Dead="selectedProvince.DeceasedPopulation" Infected="selectedProvince.InfectedPopulation"
+                         Susceptible="selectedProvince.Population - selectedProvince.DeceasedPopulation - selectedProvince.InfectedPopulation - selectedProvince.CuredPopulation" />
+            }
+            else
+            {
+                <Details Name="@_regions[_tabIndex]" Population="TotalPops" Recovered="RecoverdPops" Dead="DeceasedPops" Infected="InfectedPops"
+                         Susceptible="TotalPops - RecoverdPops - DeceasedPops - InfectedPops" />
+            }
+            <div class="grid grid-cols-2 gap-4 w-11/12 h-11/12 col-span-2">
+                <div>
+                    <canvas id="Chart1" width="200" height="200"></canvas>
+                </div>
+                <div>
+                    <canvas id="Chart2" width="200" height="200"></canvas>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <canvas id="Chart3" width="200" height="200"></canvas>
+                </div>
+                <div>
+                    <canvas id="Chart4" width="200" height="200"></canvas>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@code{
+    private const string NumberFormat = "###,###,##0";
+    private long TotalPops, InfectedPops, DeceasedPops, RecoverdPops = 0;
+    private bool _provinceSelected = false;
+    private double[,] testDouble;
+    private RegionData selectedProvince;
+    private bool firstEventTriggerd = false;
+    private string selectedProvinceKey;
+    private SIR sir = new SIR();
+    private string[] _regions = new string[] { "Deutschland", "Europa" };
+    private int _tabIndex = 0;
+    private List<double> pg = new();
+    private List<double> pg2 = new();
+    private List<double> pg3 = new();
+
+    protected override void OnInitialized()
+    {
+        MapService.MapUpdate += EventTrigger;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        testDouble = sir.calc(scale: 0.125);
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("generateChart", 0);
+            await JS.InvokeVoidAsync("generateChart", 1);
+            await JS.InvokeVoidAsync("generateChart", 2);
+            await JS.InvokeVoidAsync("generateChart", 3);
+        }
+
+        StateHasChanged();
+
+    }
+
+    private readonly object _eventLock = new();
+
+    public async void EventTrigger(object sender, EventArgs e)
+    {
+        //TODO Fix Selection
+        selectedProvinceKey = null;
+        if (firstEventTriggerd)
+        {
+            selectedProvinceKey = await JS.InvokeAsync<string>("getSelectedEntry", null);
+        }
+
+        lock ((sender as MapService).Datalock)
+        {
+            _provinceSelected = !string.IsNullOrEmpty(selectedProvinceKey);
+            if (_provinceSelected)
+            {
+                selectedProvince = MapService.BaseData[selectedProvinceKey];
+            }
+            else
+            {
+                CreateGermanyData();
+            }
+        }
+        await InvokeAsync(StateHasChanged);
+        firstEventTriggerd = true;
+    }
+
+    public void CreateGermanyData()
+    {
+        TotalPops = 0;
+        InfectedPops = 0;
+        DeceasedPops = 0;
+        RecoverdPops = 0;
+        foreach (var dicValue in MapService.BaseData.Values)
+        {
+            TotalPops += dicValue.Population;
+            InfectedPops += dicValue.InfectedPopulation;
+            DeceasedPops += dicValue.DeceasedPopulation;
+            RecoverdPops += dicValue.CuredPopulation;
+        }
+    }
+
+    private async Task TabChanged(int tabIndex)
+    {
+        await JS.InvokeVoidAsync("clearSelectedEntry", null);
+        _tabIndex = tabIndex;
+    }
+}

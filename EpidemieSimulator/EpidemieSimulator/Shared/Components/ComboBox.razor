@@ -1,0 +1,33 @@
+﻿@namespace EpidemieSimulator.Components
+
+<div class="relative w-full">
+    <div class="select-none bg-gray-700 shadow-dark text-gray-200 outline-none @(DropDownState ? "rounded-t-md":"rounded-md")">
+        <div @onclick="_=> ChangeDropDownState()" class="flex flex-row items-center justify-between p-2">
+            <p class="mx-2"> @SelectedItem</p>
+            <div class="inline-flex items-center">
+                <svg class="mx-2" width="2" height="30" viewBox="0 0 2 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="1" y1="30" x2="1" stroke="#71717A" stroke-width="2" />
+                </svg>
+                <svg class="mx-2 w-5 h-5 transform duration-150 @(!DropDownState ? "rotate-0" : "rotate-180")" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="stroke-gray-50" d="M18.75 1.25L10 10L1.25 1.25" stroke="#E4E4E7" stroke-width="2.39583" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+        </div>
+        @if (DropDownState)
+        {
+            <div class="w-full absolute shadow-dark rounded-b-md overflow-hidden bg-gray-700 z-40">
+                @foreach (var item in Options)
+                {
+                    if (item != SelectedItem)
+                    {
+                        <p @onclick="_=> ChangeValue(item)" class="px-4 py-2 text-gray-200 hover:bg-gray-600">@item</p>
+                    }
+                    else
+                    {
+                        <p class="px-4 py-2 text-gray-400">@item</p>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>

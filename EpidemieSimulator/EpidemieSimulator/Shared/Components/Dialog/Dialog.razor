@@ -1,0 +1,33 @@
+﻿@namespace EpidemieSimulator.Components
+
+@inject DialogState DialogState
+
+@if (DialogState.Opened)
+{
+    <div class="fixed w-screen h-screen overflow-hidden top-0 left-0 flex items-center justify-center transition duration-500 ease-in-out">
+        <div @onclick="DialogState.Close" class="absolute w-full h-full bg-gray-900 opacity-50"></div>
+        <div class="max-h-screen bg-gray-800 mx-auto rounded-md scroller">
+            <div class="inline-block bg-gray-600 align-bottom text-left transform transition-all sm:py-2 sm:align-middle sm:max-w-lg sm:w-full" role="dialog">
+                <div class="border-b-2 border-yellow-500 bg-gray-800 text-center px-8 pt-5 pb-4 justify-between flex -mt-2">
+                    @Caption
+                </div>
+                <div class="px-8 pt-5 pb-4 sm:py-6">
+                    <div class="flex items-start justify-start">
+                        <div class="mt-3 sm:mt-0 text-center">
+                            @if (DialogType == DialogTypes.Custom)
+                            {
+                                @Content
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 px-8 py-3 sm:flex sm:flex-row-reverse rounded-b-md -mb-2">
+                    @if (DialogType == DialogTypes.Custom)
+                    {
+                        @Action
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
